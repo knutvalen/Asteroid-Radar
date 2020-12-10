@@ -8,7 +8,8 @@ class AsteroidsViewHolder(
     private var binding: AsteroidsItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(asteroid: Asteroid) {
+    fun bind(clickListener: AsteroidsClickListener, asteroid: Asteroid) {
+        binding.clickListener = clickListener
         binding.asteroid = asteroid
         binding.executePendingBindings()
     }

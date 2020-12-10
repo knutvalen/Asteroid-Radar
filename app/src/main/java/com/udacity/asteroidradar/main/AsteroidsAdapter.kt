@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.udacity.asteroidradar.databinding.AsteroidsItemBinding
 import com.udacity.asteroidradar.domainmodels.Asteroid
 
-class AsteroidsAdapter() : ListAdapter<Asteroid, AsteroidsViewHolder>(DiffCallback) {
+class AsteroidsAdapter(val clickListener: AsteroidsClickListener) : ListAdapter<Asteroid, AsteroidsViewHolder>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
 
@@ -28,11 +28,7 @@ class AsteroidsAdapter() : ListAdapter<Asteroid, AsteroidsViewHolder>(DiffCallba
     }
 
     override fun onBindViewHolder(holder: AsteroidsViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        holder.bind(clickListener, getItem(position))
     }
 
 }
