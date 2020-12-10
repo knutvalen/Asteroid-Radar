@@ -15,6 +15,7 @@ interface DataAccessObject {
 
 }
 
+@androidx.room.Database(entities = [DatabaseAsteroid::class], version = 1)
 abstract class Database: RoomDatabase() {
     abstract val dataAccessObject: DataAccessObject
 }
