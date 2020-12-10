@@ -1,13 +1,16 @@
 package com.udacity.asteroidradar.main
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.udacity.asteroidradar.databinding.AsteroidsItemBinding
 import com.udacity.asteroidradar.domainmodels.Asteroid
 
 class AsteroidsAdapter() : ListAdapter<Asteroid, AsteroidsViewHolder>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
+
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem === newItem
         }
@@ -19,7 +22,9 @@ class AsteroidsAdapter() : ListAdapter<Asteroid, AsteroidsViewHolder>(DiffCallba
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidsViewHolder {
-        TODO("Not yet implemented")
+        return AsteroidsViewHolder(
+            AsteroidsItemBinding.inflate(LayoutInflater.from(parent.context))
+        )
     }
 
     override fun onBindViewHolder(holder: AsteroidsViewHolder, position: Int) {
