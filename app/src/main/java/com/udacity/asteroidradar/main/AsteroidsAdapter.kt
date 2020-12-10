@@ -9,11 +9,11 @@ class AsteroidsAdapter() : ListAdapter<Asteroid, AsteroidsViewHolder>(DiffCallba
 
     companion object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
-            TODO("Not yet implemented")
+            return oldItem === newItem
         }
 
         override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
-            TODO("Not yet implemented")
+            return oldItem.id == newItem.id
         }
 
     }
