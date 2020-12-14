@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.domainmodels.Asteroid
+import timber.log.Timber
 
 class MainFragment : Fragment() {
 
@@ -32,8 +34,8 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModelAdapter = AsteroidsAdapter(AsteroidsClickListener { asteroid ->
-            //TODO: navigate to details screen
+        viewModelAdapter = AsteroidsAdapter(AsteroidsClickListener {
+            Timber.i(it.name)
         })
 
         binding.root.findViewById<RecyclerView>(R.id.asteroid_recycler).apply {
@@ -49,7 +51,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.asteroids.observe(viewLifecycleOwner, { asteroids ->
-            asteroids.apply {
+            asteroids?.apply {
                 viewModelAdapter?.asteroids = asteroids
             }
         })

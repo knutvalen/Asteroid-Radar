@@ -17,21 +17,15 @@ class AsteroidsAdapter(private val clickListener: AsteroidsClickListener) : Recy
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidsViewHolder {
-        val withDataBinding: AsteroidsItemBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.asteroids_item,
-            parent,
-            false
+        val dataBinding: AsteroidsItemBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context), R.layout.asteroids_item, parent, false
         )
 
-        return AsteroidsViewHolder(withDataBinding)
+        return AsteroidsViewHolder(dataBinding)
     }
 
     override fun onBindViewHolder(holder: AsteroidsViewHolder, position: Int) {
-        holder.binding.also {
-            it.clickListener = clickListener
-            it.asteroid = asteroids[position]
-        }
+        holder.bind(clickListener, asteroids[position])
     }
 
     override fun getItemCount() = asteroids.size
