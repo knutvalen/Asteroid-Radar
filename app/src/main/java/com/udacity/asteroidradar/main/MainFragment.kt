@@ -1,16 +1,13 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.domainmodels.Asteroid
 import timber.log.Timber
 
 class MainFragment : Fragment() {
@@ -20,7 +17,8 @@ class MainFragment : Fragment() {
             "You can only access the viewModel after onViewCreated()"
         }
 
-        ViewModelProvider(this, MainViewModel.Factory(activity.application)).get(MainViewModel::class.java)
+        ViewModelProvider(this, MainViewModel.Factory(activity.application))
+            .get(MainViewModel::class.java)
     }
 
     private var viewModelAdapter: AsteroidsAdapter? = null

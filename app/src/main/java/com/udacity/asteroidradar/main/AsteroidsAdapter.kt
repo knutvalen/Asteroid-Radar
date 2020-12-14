@@ -8,7 +8,9 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.AsteroidsItemBinding
 import com.udacity.asteroidradar.domainmodels.Asteroid
 
-class AsteroidsAdapter(private val clickListener: AsteroidsClickListener) : RecyclerView.Adapter<AsteroidsViewHolder>() {
+class AsteroidsAdapter(
+    private val clickListener: AsteroidsClickListener
+) : RecyclerView.Adapter<AsteroidsViewHolder>() {
 
     var asteroids: List<Asteroid> = emptyList()
         set(value) {
