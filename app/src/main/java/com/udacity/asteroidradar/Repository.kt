@@ -13,6 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.await
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Repository(private val database: Database) {
 
@@ -24,9 +26,9 @@ class Repository(private val database: Database) {
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val response = APIService.feed.getFeed(apiKey = API).await()
-            val jsonObject = JSONObject(response)
-            val asteroids = parseAsteroidsJsonResult(jsonObject)
+            val startDate = SimpleDateFormat("YYYY-MM-dd").format(Calendar.getInstance().time)
+            val response = APIService.feed.getFeed(API, startDate).await()
+            val asteroids = parseAsteroidsJsonResult(JSONObject(response))
 
             val databaseAsteroids = asteroids.map {
                 DatabaseAsteroid(

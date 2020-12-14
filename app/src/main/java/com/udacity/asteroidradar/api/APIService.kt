@@ -11,7 +11,8 @@ interface FeedService {
 
     @GET("neo/rest/v1/feed")
     fun getFeed(
-        @Query("api_key") apiKey: String
+        @Query("api_key") apiKey: String,
+        @Query("start_date") startDate: String
     ): Call<String>
 
 }

@@ -7,7 +7,7 @@ import androidx.room.*
 @Dao
 interface DataAccessObject {
 
-    @Query("SELECT * FROM DatabaseAsteroid")
+    @Query("SELECT * FROM DatabaseAsteroid ORDER BY closeApproachDate ASC")
     fun getAsteroids(): LiveData<List<DatabaseAsteroid>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -25,7 +25,10 @@ private lateinit var INSTANCE: Database
 fun getDatabase(context: Context): Database {
     synchronized(Database::class.java) {
         if (!::INSTANCE.isInitialized) {
-            val builder = Room.databaseBuilder(context.applicationContext, Database::class.java, "asteroids")
+            val builder = Room.databaseBuilder(
+                context.applicationContext, Database::class.java, "asteroids"
+            )
+
             INSTANCE = builder.build()
         }
     }
