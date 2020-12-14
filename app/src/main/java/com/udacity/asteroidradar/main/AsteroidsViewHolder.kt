@@ -16,7 +16,13 @@ class AsteroidsViewHolder(
         binding.asteroid = asteroid
 
         val potentiallyHazardousIcon = when {
-            asteroid.isPotentiallyHazardous -> ContextCompat.getDrawable(binding.root.context, R.drawable.ic_status_potentially_hazardous)
+            asteroid.isPotentiallyHazardous -> {
+                val icon = ContextCompat.getDrawable(binding.root.context, R.drawable.ic_status_potentially_hazardous)
+                val typedValue = TypedValue()
+                binding.root.context.theme.resolveAttribute(R.attr.colorSecondary, typedValue, true)
+                icon?.setTint(typedValue.data)
+                icon
+            }
             else -> {
                 val icon = ContextCompat.getDrawable(binding.root.context, R.drawable.ic_status_normal)
                 val typedValue = TypedValue()
