@@ -19,15 +19,18 @@ import java.util.*
 class Repository(private val database: Database) {
 
     val asteroids: LiveData<List<Asteroid>> = Transformations.map(
-        database.dataAccessObject.getAsteroids()
+        database.dataAccessObject.getAsteroids(getTodayString())
     ) {
         it.asDomainModel()
     }
 
+    private fun getTodayString(): String {
+        return SimpleDateFormat("YYYY-MM-dd").format(Calendar.getInstance().time)
+    }
+
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val startDate = SimpleDateFormat("YYYY-MM-dd").format(Calendar.getInstance().time)
-            val response = APIService.feed.getFeed(API, startDate).await()
+            val response = APIService.feed.getFeed(API, getTodayString()).await()
             val asteroids = parseAsteroidsJsonResult(JSONObject(response))
 
             val databaseAsteroids = asteroids.map {
