@@ -30,6 +30,10 @@ class Repository(private val database: Database) {
     val pictureOfTheDay: LiveData<PictureOfDay>
         get() = _pictureOfTheDay
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
+        get() = _errorMessage
+
     private fun getTodayString(): String {
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         return dateFormat.format(Calendar.getInstance().time)
@@ -37,34 +41,46 @@ class Repository(private val database: Database) {
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val response = APIService.nearEarthObject.getFeed(API, getTodayString()).await()
-            val asteroids = parseAsteroidsJsonResult(JSONObject(response))
+            try {
+                val response = APIService.nearEarthObject.getFeed(API, getTodayString()).await()
+                val asteroids = parseAsteroidsJsonResult(JSONObject(response))
 
-            val databaseAsteroids = asteroids.map {
-                DatabaseAsteroid(
-                    id = it.id,
-                    name = it.name,
-                    closeApproachDate = it.closeApproachDate,
-                    absoluteMagnitude = it.absoluteMagnitude,
-                    estimatedDiameter = it.estimatedDiameter,
-                    relativeVelocity = it.relativeVelocity,
-                    distanceFromEarth = it.distanceFromEarth,
-                    isPotentiallyHazardous = it.isPotentiallyHazardous
-                )
-            }.toTypedArray()
+                val databaseAsteroids = asteroids.map {
+                    DatabaseAsteroid(
+                        id = it.id,
+                        name = it.name,
+                        closeApproachDate = it.closeApproachDate,
+                        absoluteMagnitude = it.absoluteMagnitude,
+                        estimatedDiameter = it.estimatedDiameter,
+                        relativeVelocity = it.relativeVelocity,
+                        distanceFromEarth = it.distanceFromEarth,
+                        isPotentiallyHazardous = it.isPotentiallyHazardous
+                    )
+                }.toTypedArray()
 
-            database.dataAccessObject.insertAll(*databaseAsteroids)
+                database.dataAccessObject.insertAll(*databaseAsteroids)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _errorMessage.value = "asteroid"
+                }
+            }
         }
     }
 
     suspend fun refreshPictureOfTheDay() {
-        val pictureOfTheDay = APIService
-            .astronomyPictureOfTheDay
-            .getAstronomyPictureOfTheDay(API, getTodayString())
-            .await()
+        try {
+            val pictureOfTheDay = APIService
+                .astronomyPictureOfTheDay
+                .getAstronomyPictureOfTheDay(API, getTodayString())
+                .await()
 
-        if (pictureOfTheDay.mediaType == "image") {
-            _pictureOfTheDay.value = pictureOfTheDay
+            if (pictureOfTheDay.mediaType == "image") {
+                _pictureOfTheDay.value = pictureOfTheDay
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                _errorMessage.value = "pictureOfTheDay"
+            }
         }
     }
 
@@ -72,6 +88,10 @@ class Repository(private val database: Database) {
         withContext(Dispatchers.IO) {
             database.dataAccessObject.deleteOldAsteroids(getTodayString())
         }
+    }
+
+    fun resetErrorMessage() {
+        _errorMessage.value = null
     }
 
 }

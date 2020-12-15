@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -59,6 +60,22 @@ class MainFragment : Fragment() {
             if (asteroid != null) {
                 findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
                 viewModel.displayDetailsComplete()
+            }
+        })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
+            if (errorMessage != null) {
+                val message = when (errorMessage) {
+                    "asteroid" -> context?.getString(R.string.error_asteroid_api)
+                    "pictureOfTheDay" -> context?.getString(R.string.error_picture_api)
+                    else -> null
+                }
+
+                if (message != null) {
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                }
+
+                viewModel.displayErrorMessageComplete()
             }
         })
     }

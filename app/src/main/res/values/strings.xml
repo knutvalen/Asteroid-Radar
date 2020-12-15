@@ -21,4 +21,6 @@
     <string name="nasa_picture_of_day_content_description_format">NASA\'s picture of day: %s</string>
     <string name="help">Help</string>
     <string name="hazardous_icon_description">Hazardous level icon</string>
+    <string name="error_asteroid_api">An error occured while refreshing asteroids.</string>
+    <string name="error_picture_api">An error occured while loading the picture of the day.</string>
 </resources>

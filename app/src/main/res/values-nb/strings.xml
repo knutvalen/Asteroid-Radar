@@ -19,4 +19,6 @@
     <string name="this_is_nasa_s_picture_of_day_showing_nothing_yet">Dette er NASAs dagens bilde som ikke viser noe ennå</string>
     <string name="nasa_picture_of_day_content_description_format">NASAs dagens bilde: %s</string>
     <string name="hazardous_icon_description">Farlig nivå ikon</string>
+    <string name="error_asteroid_api">Det oppstod en feil under oppdatering av asteroider.</string>
+    <string name="error_picture_api">Det oppstod en feil under innlasting av dagens bilde.</string>
 </resources>
