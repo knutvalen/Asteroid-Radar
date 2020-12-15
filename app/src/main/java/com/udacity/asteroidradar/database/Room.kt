@@ -13,6 +13,9 @@ interface DataAccessObject {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroids: DatabaseAsteroid)
 
+    @Query("DELETE FROM DatabaseAsteroid WHERE closeApproachDate < :dateString")
+    fun deleteOldAsteroids(dateString: String)
+
 }
 
 @androidx.room.Database(entities = [DatabaseAsteroid::class], version = 1)

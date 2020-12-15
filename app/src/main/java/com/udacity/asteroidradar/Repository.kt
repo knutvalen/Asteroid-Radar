@@ -31,7 +31,6 @@ class Repository(private val database: Database) {
         get() = _pictureOfTheDay
 
     private fun getTodayString(): String {
-//        return "2020-12-14"
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         return dateFormat.format(Calendar.getInstance().time)
     }
@@ -66,6 +65,12 @@ class Repository(private val database: Database) {
 
         if (pictureOfTheDay.mediaType == "image") {
             _pictureOfTheDay.value = pictureOfTheDay
+        }
+    }
+
+    suspend fun deleteOldAsteroids() {
+        withContext(Dispatchers.IO) {
+            database.dataAccessObject.deleteOldAsteroids(getTodayString())
         }
     }
 
