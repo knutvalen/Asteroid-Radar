@@ -3,4 +3,4 @@
 
 This is the second assignment of the [Android App Development in Kotlin course at Udacity](https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012).
 
-Update the NASA API key in the file `/app/src/main/java/com/udacity/asteroidradar/KEYS.kt`. 
+Add your NASA API key to your `local.properties` file as `apiKey=YOUR_API_KEY`. 

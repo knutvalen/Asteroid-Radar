@@ -3,7 +3,6 @@ package com.udacity.asteroidradar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.udacity.asteroidradar.KEYS.API
 import com.udacity.asteroidradar.api.APIService
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.Database
@@ -42,7 +41,7 @@ class Repository(private val database: Database) {
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
             try {
-                val response = APIService.nearEarthObject.getFeed(API, getTodayString()).await()
+                val response = APIService.nearEarthObject.getFeed(BuildConfig.API_KEY, getTodayString()).await()
                 val asteroids = parseAsteroidsJsonResult(JSONObject(response))
 
                 val databaseAsteroids = asteroids.map {
@@ -71,7 +70,7 @@ class Repository(private val database: Database) {
         try {
             val pictureOfTheDay = APIService
                 .astronomyPictureOfTheDay
-                .getAstronomyPictureOfTheDay(API, getTodayString())
+                .getAstronomyPictureOfTheDay(BuildConfig.API_KEY, getTodayString())
                 .await()
 
             if (pictureOfTheDay.mediaType == "image") {
