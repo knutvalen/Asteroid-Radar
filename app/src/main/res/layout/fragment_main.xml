@@ -40,9 +40,8 @@
                 android:background="#55010613"
                 android:padding="16dp"
                 android:text="@string/image_of_the_day"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textAppearance="?textAppearanceHeadline5" />
+
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
