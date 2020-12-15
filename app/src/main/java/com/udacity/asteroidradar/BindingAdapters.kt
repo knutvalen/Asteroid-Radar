@@ -1,16 +1,25 @@
 package com.udacity.asteroidradar
 
+import android.content.res.ColorStateList
+import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Picasso
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
+    val typedValue = TypedValue()
+
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.context.theme.resolveAttribute(R.attr.colorSecondary, typedValue, true)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.context.theme.resolveAttribute(R.attr.colorOnPrimary, typedValue, true)
     }
+
+    imageView.imageTintList = ColorStateList.valueOf(typedValue.data)
 }
 
 @BindingAdapter("asteroidStatusImage")
@@ -38,4 +47,9 @@ fun bindTextViewToKmUnit(textView: TextView, number: Double) {
 fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
+}
+
+@BindingAdapter("imageUrl")
+fun setImageUrl(imageView: ImageView, url: String?) {
+    Picasso.with(imageView.context).load(url).into(imageView)
 }

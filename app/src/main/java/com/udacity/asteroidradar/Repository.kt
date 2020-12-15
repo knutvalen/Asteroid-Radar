@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.KEYS.API
 import com.udacity.asteroidradar.api.APIService
@@ -9,6 +10,7 @@ import com.udacity.asteroidradar.database.Database
 import com.udacity.asteroidradar.database.DatabaseAsteroid
 import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.domainmodels.Asteroid
+import com.udacity.asteroidradar.domainmodels.PictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -24,13 +26,19 @@ class Repository(private val database: Database) {
         it.asDomainModel()
     }
 
+    private val _pictureOfTheDay = MutableLiveData<PictureOfDay>()
+    val pictureOfTheDay: LiveData<PictureOfDay>
+        get() = _pictureOfTheDay
+
     private fun getTodayString(): String {
-        return SimpleDateFormat("YYYY-MM-dd").format(Calendar.getInstance().time)
+//        return "2020-12-14"
+        val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+        return dateFormat.format(Calendar.getInstance().time)
     }
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val response = APIService.feed.getFeed(API, getTodayString()).await()
+            val response = APIService.nearEarthObject.getFeed(API, getTodayString()).await()
             val asteroids = parseAsteroidsJsonResult(JSONObject(response))
 
             val databaseAsteroids = asteroids.map {
@@ -47,6 +55,17 @@ class Repository(private val database: Database) {
             }.toTypedArray()
 
             database.dataAccessObject.insertAll(*databaseAsteroids)
+        }
+    }
+
+    suspend fun refreshPictureOfTheDay() {
+        val pictureOfTheDay = APIService
+            .astronomyPictureOfTheDay
+            .getAstronomyPictureOfTheDay(API, getTodayString())
+            .await()
+
+        if (pictureOfTheDay.mediaType == "image") {
+            _pictureOfTheDay.value = pictureOfTheDay
         }
     }
 

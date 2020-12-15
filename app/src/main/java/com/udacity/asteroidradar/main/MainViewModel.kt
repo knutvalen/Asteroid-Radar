@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.udacity.asteroidradar.Repository
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.domainmodels.Asteroid
+import com.udacity.asteroidradar.domainmodels.PictureOfDay
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {// maybe use AndroidViewModel
@@ -12,6 +13,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {/
     private val database = getDatabase(application)
     private val repository = Repository(database)
     val asteroids = repository.asteroids
+    val pictureOfTheDay = repository.pictureOfTheDay
 
     private val _selectedAsteroid = MutableLiveData<Asteroid>()
     val selectedAsteroid: LiveData<Asteroid>
@@ -20,6 +22,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {/
     init {
         viewModelScope.launch {
             repository.refreshAsteroids()
+            repository.refreshPictureOfTheDay()
         }
     }
 
