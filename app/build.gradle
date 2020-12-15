@@ -16,15 +16,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        def localProperties = new Properties()
+        localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+        buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
     }
 
     buildTypes {
-        debug {
-            def localProperties = new Properties()
-            localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-            buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
