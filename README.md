@@ -3,4 +3,4 @@
 
 This is the second assignment of the [Android App Development in Kotlin course at Udacity](https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012).
 
-Add your NASA API key to your `local.properties` file as `apiKey=YOUR_API_KEY`. 
+Add your NASA API key to your `local.properties` file as `apiKey=YOUR_API_KEY`. Get your API key from https://api.nasa.gov/. 
