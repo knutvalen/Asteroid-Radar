@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.udacity.asteroidradar.APIError
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import timber.log.Timber
@@ -63,11 +64,11 @@ class MainFragment : Fragment() {
             }
         })
 
-        viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
-            if (errorMessage != null) {
-                val message = when (errorMessage) {
-                    "asteroid" -> context?.getString(R.string.error_asteroid_api)
-                    "pictureOfTheDay" -> context?.getString(R.string.error_picture_api)
+        viewModel.apiError.observe(viewLifecycleOwner, { apiError ->
+            if (apiError != null) {
+                val message = when (apiError) {
+                    APIError.NearEarthObjectWebService -> context?.getString(R.string.error_asteroid_api)
+                    APIError.AstronomyPictureOfTheDayService -> context?.getString(R.string.error_picture_api)
                     else -> null
                 }
 

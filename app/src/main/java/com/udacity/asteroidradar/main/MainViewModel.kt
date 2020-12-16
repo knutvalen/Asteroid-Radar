@@ -13,7 +13,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = Repository(database)
     val asteroids = repository.asteroids
     val pictureOfTheDay = repository.pictureOfTheDay
-    val errorMessage = repository.errorMessage
+    val apiError = repository.apiError
 
     private val _selectedAsteroid = MutableLiveData<Asteroid>()
     val selectedAsteroid: LiveData<Asteroid>

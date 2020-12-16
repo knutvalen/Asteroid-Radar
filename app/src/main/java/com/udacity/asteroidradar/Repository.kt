@@ -29,9 +29,9 @@ class Repository(private val database: Database) {
     val pictureOfTheDay: LiveData<PictureOfDay>
         get() = _pictureOfTheDay
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
+    private val _apiError = MutableLiveData<APIError>()
+    val apiError: LiveData<APIError>
+        get() = _apiError
 
     private fun getTodayString(): String {
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
@@ -60,7 +60,7 @@ class Repository(private val database: Database) {
                 database.dataAccessObject.insertAll(*databaseAsteroids)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    _errorMessage.value = "asteroid"
+                    _apiError.value = APIError.NearEarthObjectWebService
                 }
             }
         }
@@ -78,7 +78,7 @@ class Repository(private val database: Database) {
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                _errorMessage.value = "pictureOfTheDay"
+                _apiError.value = APIError.AstronomyPictureOfTheDayService
             }
         }
     }
@@ -90,7 +90,7 @@ class Repository(private val database: Database) {
     }
 
     fun resetErrorMessage() {
-        _errorMessage.value = null
+        _apiError.value = null
     }
 
 }

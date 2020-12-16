@@ -13,7 +13,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NearEarthObjectWebService {//TODO: rename
+interface NearEarthObjectWebService {
 
     @GET("neo/rest/v1/feed")
     fun getFeed(
