@@ -148,7 +148,9 @@
                     tools:text="0.0924 au" />
 
             </LinearLayout>
+
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
